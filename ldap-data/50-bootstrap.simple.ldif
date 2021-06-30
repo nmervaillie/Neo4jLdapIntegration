@@ -1,0 +1,78 @@
+
+dn: ou=groups,dc=example,dc=org
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+dn: cn=readers,ou=groups,dc=example,dc=org
+objectClass: groupOfNames
+objectClass: top
+cn: reader
+member:uid=reader,dc=example,dc=org
+
+dn: cn=publishers,ou=groups,dc=example,dc=org
+objectClass: groupOfNames
+objectClass: top
+cn: publisher
+member:uid=publisher,dc=example,dc=org
+
+dn: cn=architects,ou=groups,dc=example,dc=org
+objectClass: groupOfNames
+objectClass: top
+cn: architect
+member:uid=architect,dc=example,dc=org
+
+dn: cn=admins,ou=groups,dc=example,dc=org
+objectClass: groupOfNames
+objectClass: top
+cn: admin
+member:uid=admin,dc=example,dc=org
+
+dn: uid=reader,dc=example,dc=org
+objectClass: organizationalPerson
+objectClass: person
+objectClass: extensibleObject
+objectClass: uidObject
+objectClass: inetOrgPerson
+objectClass: top
+cn: Reader User
+givenName: Reader
+sn: reader
+uid: reader
+mail: reader@example.com
+ou: users
+userpassword: changeme
+memberOf: cn=readers,ou=groups,dc=example,dc=org
+
+dn: uid=publisher,dc=example,dc=org
+objectClass: organizationalPerson
+objectClass: person
+objectClass: extensibleObject
+objectClass: uidObject
+objectClass: inetOrgPerson
+objectClass: top
+cn: Publisher User
+givenName: Publisher
+sn: publisher
+uid: publisher
+mail: publisher@example.com
+ou: users
+userpassword: changeme
+memberOf: cn=publishers,ou=groups,dc=example,dc=org
+
+dn: uid=architect,dc=example,dc=org
+objectClass: organizationalPerson
+objectClass: person
+objectClass: extensibleObject
+objectClass: uidObject
+objectClass: inetOrgPerson
+objectClass: top
+cn: Architect User
+givenName: Architect
+sn: architect
+uid: architect
+mail: architect@example.com
+ou: users
+userpassword: changeme
+memberOf: cn=architects,ou=groups,dc=example,dc=org
+

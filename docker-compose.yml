@@ -1,0 +1,61 @@
+version: '3'
+services:
+  neo4j:
+    image: 'library/neo4j:4.2.2-enterprise'
+    environment:
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_dbms_connector_bolt_advertised__address=:37687
+      - NEO4J_dbms_connector_http_advertised__address=:37474
+      - NEO4JLABS_PLUGINS=["apoc"]
+      - NEO4J_dbms_security_authentication__providers=ldap
+      - NEO4J_dbms_security_authorization__providers=ldap
+      - NEO4J_dbms_security_ldap_host=ldap://openldap:389
+      - NEO4J_dbms_security_auth__cache__ttl=1s
+#      DN style binding
+#      - NEO4J_dbms_security_ldap_authorization_use__system__account=false
+#      - NEO4J_dbms_security_ldap_authentication_user__dn__template=uid={0},dc=example,dc=org
+#      - NEO4J_dbms_security_ldap_authentication_cache__enabled=false
+#      System account style
+      - NEO4J_dbms_security_ldap_authentication_cache__enabled=true
+      - NEO4J_dbms_security_ldap_authorization_use__system__account=true
+      - NEO4J_dbms_security_ldap_authorization_system__username=cn=bind,dc=example,dc=org
+      - NEO4J_dbms_security_ldap_authorization_system__password=bind
+      - NEO4J_dbms_security_ldap_authentication_user__dn__template=uid={0},dc=example,dc=org
+      - NEO4J_dbms_security_ldap_authorization_user__search__base=dc=example,dc=org
+      - NEO4J_dbms_security_ldap_authorization_user__search__filter=(&(objectClass=*)(uid={0}))
+#      group to role mapping
+      - NEO4J_dbms_security_ldap_authorization_group__membership__attributes=memberOf
+      - NEO4J_dbms_security_ldap_authorization_group__to__role__mapping=
+          "cn=readers,ou=groups,dc=example,dc=org" = reader;
+          "cn=publishers,ou=groups,dc=example,dc=org" = publisher;
+          "cn=architects,ou=groups,dc=example,dc=org" = architect;
+          "cn=admins,ou=groups,dc=example,dc=org" = admin
+    ports:
+      - 37474:7474
+      - 37687:7687
+  openldap:
+    image: "osixia/openldap:1.5.0"
+    hostname: openldap
+    ports:
+      - "3389:389"
+      - "3636:636"
+    volumes:
+      - $PWD/ldap-data:/container/service/slapd/assets/config/bootstrap/ldif/custom
+    environment:
+      - LDAP_ORGANISATION=example
+      - LDAP_DOMAIN=example.org
+      - LDAP_ADMIN_PASSWORD=changeme # cn=admin,dc=example,dc=org
+      - LDAP_BASE_DN=
+      - LDAP_READONLY_USER=true
+      - LDAP_READONLY_USER_USERNAME=bind
+      - LDAP_READONLY_USER_PASSWORD=bind
+      - LDAP_RFC2307BIS_SCHEMA=true # adds memberOf support
+    command: --copy-service
+  php-ldap-admin:
+    image: "osixia/phpldapadmin:0.9.0"
+    hostname: ldapadmin
+    ports:
+      - "3443:443"
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=openldap

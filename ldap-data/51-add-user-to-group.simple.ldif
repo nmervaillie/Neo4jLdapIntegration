@@ -1,0 +1,12 @@
+# needs to be in a separate file bc contains changetype: and gets executed with ldap modify
+
+dn: cn=readers,ou=groups,dc=example,dc=org
+changetype: modify
+add: memberOf
+memberOf: uid=architect,dc=example,dc=org
+
+#dn: uid=architect,dc=example,dc=org
+#changetype: modify
+#add: memberOf
+#memberOf: cn=architect,ou=groups,dc=example,dc=org
+
