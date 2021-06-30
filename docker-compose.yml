@@ -13,17 +13,19 @@ services:
       - NEO4J_dbms_security_ldap_host=ldap://openldap:389
       - NEO4J_dbms_security_auth__cache__ttl=1s
 #      DN style binding
-#      - NEO4J_dbms_security_ldap_authorization_use__system__account=false
-#      - NEO4J_dbms_security_ldap_authentication_user__dn__template=uid={0},dc=example,dc=org
-#      - NEO4J_dbms_security_ldap_authentication_cache__enabled=false
-#      System account style
-      - NEO4J_dbms_security_ldap_authentication_cache__enabled=true
-      - NEO4J_dbms_security_ldap_authorization_use__system__account=true
-      - NEO4J_dbms_security_ldap_authorization_system__username=cn=bind,dc=example,dc=org
-      - NEO4J_dbms_security_ldap_authorization_system__password=bind
+      - NEO4J_dbms_security_ldap_authorization_use__system__account=false
       - NEO4J_dbms_security_ldap_authentication_user__dn__template=uid={0},dc=example,dc=org
+      - NEO4J_dbms_security_ldap_authentication_cache__enabled=true
       - NEO4J_dbms_security_ldap_authorization_user__search__base=dc=example,dc=org
       - NEO4J_dbms_security_ldap_authorization_user__search__filter=(&(objectClass=*)(uid={0}))
+#      System account style
+#      - NEO4J_dbms_security_ldap_authentication_cache__enabled=true
+#      - NEO4J_dbms_security_ldap_authorization_use__system__account=true
+#      - NEO4J_dbms_security_ldap_authorization_system__username=cn=bind,dc=example,dc=org
+#      - NEO4J_dbms_security_ldap_authorization_system__password=bind
+#      - NEO4J_dbms_security_ldap_authentication_user__dn__template=uid={0},dc=example,dc=org
+#      - NEO4J_dbms_security_ldap_authorization_user__search__base=dc=example,dc=org
+#      - NEO4J_dbms_security_ldap_authorization_user__search__filter=(&(objectClass=*)(uid={0}))
 #      group to role mapping
       - NEO4J_dbms_security_ldap_authorization_group__membership__attributes=memberOf
       - NEO4J_dbms_security_ldap_authorization_group__to__role__mapping=
